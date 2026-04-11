@@ -1,0 +1,21 @@
+#捕捉会得到名称LeftLeg
+import asyncio
+from bleak import BleakScanner
+
+async def scan_ble_devices():
+    print("正在扫描附近的蓝牙设备，请稍等...")
+    devices = await BleakScanner.discover(timeout=10)  # timeout: 扫描时间，单位秒
+
+    if not devices:
+        print("没有发现任何蓝牙设备")
+        return
+
+    print(f"\n✅ 共发现 {len(devices)} 个蓝牙设备：\n")
+    for d in devices:
+        name = d.name or "Unknown Device"
+        address = d.address
+        rssi = d.rssi
+        print(f"设备名: {name:<20} MAC地址: {address:<20} RSSI: {rssi} dBm")
+
+if __name__ == "__main__":
+    asyncio.run(scan_ble_devices())
